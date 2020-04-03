@@ -174,7 +174,7 @@ namespace Breakout
             else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
             {
                 this.paddlePos.X += 20;
-                int a = 5;
+                int a = 15;
             }
         }
     }
