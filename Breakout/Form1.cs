@@ -23,8 +23,9 @@ namespace Breakout
         {
             InitializeComponent(); //設定したハンドラ等の初期設定
 
+            this.ballSpeed = new Vector(Form2.x, Form2.y); //Form2で設定した値を代入
+
             this.ballPos = new Vector(200, 200);
-            this.ballSpeed = new Vector(-4, -8);
             this.ballRadius = 10;
             this.paddlePos = new Rectangle(100, this.Height - 50, 100, 5); //(位置横縦,サイズ横縦)
             this.blockPos = new List<Rectangle>();
@@ -72,7 +73,6 @@ namespace Breakout
             double dist = Math.Abs(DotProduct(dir1, n));
             double a1 = DotProduct(dir1, lineDir);
             double a2 = DotProduct(dir2, lineDir);
-            Console.WriteLine(dist);
 
             return (a1 * a2 < 0 && dist < radius) ? true : false;
         }
@@ -173,9 +173,20 @@ namespace Breakout
             }
             else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
             {
-                this.paddlePos.X += 20;
-                int a = 5;
+                //this.paddlePos.X += 20;
             }
+        }
+
+        private void home_Click(object sender, EventArgs e)
+        {
+            // Form2のインスタンスを生成
+            Form2 form2 = new Form2();
+            // form2を表示
+            form2.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
         }
     }
 }
