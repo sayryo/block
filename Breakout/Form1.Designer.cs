@@ -34,10 +34,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(830, 434);
+            this.ClientSize = new System.Drawing.Size(538, 434);
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.form1_Closing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyPressed);
             this.ResumeLayout(false);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,13 +19,21 @@ namespace Breakout
         int ballRadius; //半径
         Rectangle paddlePos; //パドル位置(Rectangle:四角形を作成)
         List<Rectangle> blockPos; //ブロックの位置(リスト化)
+        Timer timer = new Timer();
+
+        public static int blockNum { get; set; } // ブロック数
+        public static int blockNumMax { get; set; } // ブロック数最大値
+
+        public static Stopwatch keikaTime = new Stopwatch(); //経過時間
+
 
         public Form1()
         {
             InitializeComponent(); //設定したハンドラ等の初期設定
 
+            this.ballSpeed = new Vector(Form2.x, Form2.y); //Form2で設定した値を代入
+
             this.ballPos = new Vector(200, 200);
-            this.ballSpeed = new Vector(-4, -8);
             this.ballRadius = 10;
             this.paddlePos = new Rectangle(100, this.Height - 50, 100, 5); //(位置横縦,サイズ横縦)
             this.blockPos = new List<Rectangle>();
@@ -33,12 +42,19 @@ namespace Breakout
                 for (int y = 0; y <= 150; y += 40)
                 {
                     this.blockPos.Add(new Rectangle(25 + x, y, 80, 25));
+
+                    blockNum++;
                 }
             }
-            Timer timer = new Timer();
+            blockNumMax = blockNum;
+
+            //タイマー
             timer.Interval = 33;
             timer.Tick += new EventHandler(Update); //timer.Trik：Timer有効時に呼ばれる
             timer.Start();
+
+            //経過時間スタート
+            keikaTime.Restart();
         }
 
         /// <summary>
@@ -72,7 +88,6 @@ namespace Breakout
             double dist = Math.Abs(DotProduct(dir1, n));
             double a1 = DotProduct(dir1, lineDir);
             double a2 = DotProduct(dir2, lineDir);
-            Console.WriteLine(dist);
 
             return (a1 * a2 < 0 && dist < radius) ? true : false;
         }
@@ -132,12 +147,26 @@ namespace Breakout
                 {
                     ballSpeed.Y *= -1;
                     this.blockPos.Remove(blockPos[i]);
+                    blockNum--;
                 }
                 else if (collision == 3 || collision == 4)
                 {
                     ballSpeed.X *= -1;
                     this.blockPos.Remove(blockPos[i]);
+                    blockNum--;
                 }
+            }
+
+            //失敗時
+            if (ballPos.Y > this.Height)
+            {
+                //画面閉じてリザルト表示
+                keikaTime.Stop();
+                timer.Stop();
+                this.Close();
+                this.Hide();
+                Form3 form3 = new Form3();
+                form3.ShowDialog();
             }
 
             //画面再描画
@@ -174,8 +203,15 @@ namespace Breakout
             else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
             {
                 this.paddlePos.X += 20;
-                int a = 15;
             }
+        }
+
+        private void form1_Closing(object sender, FormClosingEventArgs e) //×ボタン押下時
+        {
+            keikaTime.Stop();
+            timer.Stop();
+            this.Close();
+            this.Hide();
         }
     }
 }
