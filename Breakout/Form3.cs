@@ -41,7 +41,7 @@ namespace Breakout
             this.Close();
         }
 
-        private void form3_load(object sender, EventArgs e)
+        private void form3_Load(object sender, EventArgs e)
         {
             label2.Text = score().ToString();
 
