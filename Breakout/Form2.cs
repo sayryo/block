@@ -13,29 +13,34 @@ namespace Breakout
 {
     public partial class Form2 : Form
     {
+        //ボールの速度(x, y)
         public static int x { get; set; }
         public static int y { get; set; }
-
+        //モード値
+        public static int mode { get; set; }
+        //モードテキスト
+        public static string modeText { get; set; }
 
         public Form2()
         {
             InitializeComponent();
-
         }
 
-        private void start_Click(object sender, EventArgs e)
+        private void start_Click(object sender, EventArgs e) //スタートボタン
         {
-            Console.WriteLine(x);
+            mode_Select(sender, e);
+
             // Form1のインスタンスを生成
             Form1 form1 = new Form1();
             // form1を表示
             form1.ShowDialog();
-           
         }
 
-        public void mode_Select(object sender, EventArgs e)
+        private void mode_Select(object sender, EventArgs e) //モードセレクト
         {
             int selectedMode = comboBox1.SelectedIndex;
+            mode = selectedMode;
+
             switch (selectedMode)
             {
                 case 0:
@@ -58,6 +63,19 @@ namespace Breakout
                     x = -8;
                     y = -16;
                     break;
+                default:
+                    //未選択時はNormal
+                    x = -3;
+                    y = -6;
+                    break;
+            }
+
+            if (comboBox1.SelectedItem ==null)
+            {
+                modeText = "Normal";
+            } else
+            {
+                modeText = comboBox1.SelectedItem.ToString();
             }
         }
     }

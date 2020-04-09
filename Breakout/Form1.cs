@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,13 @@ namespace Breakout
         int ballRadius; //半径
         Rectangle paddlePos; //パドル位置(Rectangle:四角形を作成)
         List<Rectangle> blockPos; //ブロックの位置(リスト化)
+        Timer timer = new Timer();
+
+        public static int blockNum { get; set; } // ブロック数
+        public static int blockNumMax { get; set; } // ブロック数最大値
+
+        public static Stopwatch keikaTime = new Stopwatch(); //経過時間
+
 
         public Form1()
         {
@@ -34,12 +42,19 @@ namespace Breakout
                 for (int y = 0; y <= 150; y += 40)
                 {
                     this.blockPos.Add(new Rectangle(25 + x, y, 80, 25));
+
+                    blockNum++;
                 }
             }
-            Timer timer = new Timer();
+            blockNumMax = blockNum;
+
+            //タイマー
             timer.Interval = 33;
             timer.Tick += new EventHandler(Update); //timer.Trik：Timer有効時に呼ばれる
             timer.Start();
+
+            //経過時間スタート
+            keikaTime.Restart();
         }
 
         /// <summary>
@@ -132,12 +147,26 @@ namespace Breakout
                 {
                     ballSpeed.Y *= -1;
                     this.blockPos.Remove(blockPos[i]);
+                    blockNum--;
                 }
                 else if (collision == 3 || collision == 4)
                 {
                     ballSpeed.X *= -1;
                     this.blockPos.Remove(blockPos[i]);
+                    blockNum--;
                 }
+            }
+
+            //失敗時
+            if (ballPos.Y > this.Height)
+            {
+                //画面閉じてリザルト表示
+                keikaTime.Stop();
+                timer.Stop();
+                this.Close();
+                this.Hide();
+                Form3 form3 = new Form3();
+                form3.ShowDialog();
             }
 
             //画面再描画
@@ -173,21 +202,8 @@ namespace Breakout
             }
             else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
             {
-                //this.paddlePos.X += 20;
+                this.paddlePos.X += 20;
             }
-        }
-
-        private void home_Click(object sender, EventArgs e)
-        {
-            // Form2のインスタンスを生成
-            Form2 form2 = new Form2();
-            // form2を表示
-            form2.ShowDialog();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
