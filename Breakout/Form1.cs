@@ -205,5 +205,13 @@ namespace Breakout
                 this.paddlePos.X += 20;
             }
         }
+
+        private void form1_Closing(object sender, FormClosingEventArgs e) //×ボタン押下時
+        {
+            keikaTime.Stop();
+            timer.Stop();
+            this.Close();
+            this.Hide();
+        }
     }
 }

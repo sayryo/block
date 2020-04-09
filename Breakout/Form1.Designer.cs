@@ -38,6 +38,7 @@
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.form1_Closing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyPressed);
             this.ResumeLayout(false);
