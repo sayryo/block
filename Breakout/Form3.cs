@@ -41,7 +41,7 @@ namespace Breakout
             this.Close();
         }
 
-        private void form3_load(object sender, EventArgs e)
+        private void form3_Load(object sender, EventArgs e)
         {
             label2.Text = score().ToString();
 
@@ -49,6 +49,12 @@ namespace Breakout
             label4.Text = Form1.keikaTime.Elapsed.ToString().Substring(6, 6);
 
             label6.Text = Form2.modeText;
+
+            if (Form1.blockNum > 0)
+            {
+                label7.Text = "NotGood..";
+                label7.ForeColor = Color.Black;
+            }
         }
     }
 }

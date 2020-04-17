@@ -19,7 +19,10 @@ namespace Breakout
         int ballRadius; //半径
         Rectangle paddlePos; //パドル位置(Rectangle:四角形を作成)
         List<Rectangle> blockPos; //ブロックの位置(リスト化)
-        Timer timer = new Timer();
+        Timer timer = new Timer(); //ボール移動タイマー
+        Timer timerCount = new Timer(); //カウントダウンタイマー
+        int countSize = 200; //カウント文字のサイズ
+        int countNo = 3; //カウント数
 
         public static int blockNum { get; set; } // ブロック数
         public static int blockNumMax { get; set; } // ブロック数最大値
@@ -48,13 +51,59 @@ namespace Breakout
             }
             blockNumMax = blockNum;
 
-            //タイマー
+            label1.Font = new Font(label1.Font.OriginalFontName, countSize + 1); //カウントダウン初期表示サイズ指定
+            label1.Left = (this.Width / 2) - (countSize / 2);
+            label1.Top = (this.Height /2) - (countSize / 2);
+            label1.BackColor = Color.Transparent; //背景透明化
+
+            label2.BackColor = Color.Transparent; //背景透明化
+
+            timer.Interval = 100;
+            timerCount.Tick += new EventHandler(countDown); //timer.Trik：Timer有効時に呼ばれる
+            timerCount.Start();
+        }
+
+        private void countDown(object sender, EventArgs e)
+        {
+            //if (countSize == 200 && countNo == 3)
+            //{
+            //    System.Threading.Thread.Sleep(8000);
+            //}
+
+            if (countSize == 0)
+            {
+                countNo--;
+                label1.Text = countNo.ToString();
+                countSize = 200;
+            }
+
+            if (countSize == 20 && countNo == 1)
+            {
+                timerCount.Stop();
+
+                //ゲームスタート
+                countDownAfter();
+            }
+            countSize -= 20;
+            label1.Font = new Font(label1.Font.OriginalFontName, countSize +1);
+            label1.Left = (this.Width / 2) - (countSize / 2);
+            label1.Top = (this.Height / 2) - (countSize / 2);
+        }
+
+        private void countDownAfter()
+        {
+            //ゲームタイマー
             timer.Interval = 33;
             timer.Tick += new EventHandler(Update); //timer.Trik：Timer有効時に呼ばれる
             timer.Start();
 
             //経過時間スタート
             keikaTime.Restart();
+        }
+
+        private void realTime() //リアルタイム表示
+        {
+            label2.Text = keikaTime.Elapsed.ToString().Substring(6, 6);
         }
 
         /// <summary>
@@ -115,6 +164,9 @@ namespace Breakout
 
         private void Update(object sender, EventArgs e)
         {
+            //リアルタイム
+            realTime();
+
             //ボールの移動
             ballPos += ballSpeed;
 
@@ -196,13 +248,17 @@ namespace Breakout
 
         private void KeyPressed(object sender, KeyPressEventArgs e) //押下毎
         {
+            if (Form4.paddleMove == 0) //設定行っていない場合
+            {
+                Form4.paddleMove = 20;
+            }
             if (e.KeyChar == 'a' && paddlePos.Left > 0) //A押下時
             {
-                this.paddlePos.X -= 20;
+                this.paddlePos.X -= Form4.paddleMove;
             }
             else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
             {
-                this.paddlePos.X += 20;
+                this.paddlePos.X += Form4.paddleMove;
             }
         }
 
