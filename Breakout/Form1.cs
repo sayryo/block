@@ -34,12 +34,15 @@ namespace Breakout
         {
             InitializeComponent(); //設定したハンドラ等の初期設定
 
-            this.ballSpeed = new Vector(Form2.x, Form2.y); //Form2で設定した値を代入
+            this.ballSpeed = new Vector(Form2.x/3, Form2.y/3); //Form2で設定した値を代入
 
             this.ballPos = new Vector(200, 200);
             this.ballRadius = 10;
             this.paddlePos = new Rectangle(100, this.Height - 50, 100, 5); //(位置横縦,サイズ横縦)
             this.blockPos = new List<Rectangle>();
+
+            blockNum = 0;
+
             for (int x = 0; x <= this.Height; x += 100)
             {
                 for (int y = 0; y <= 150; y += 40)
@@ -93,7 +96,7 @@ namespace Breakout
         private void countDownAfter()
         {
             //ゲームタイマー
-            timer.Interval = 33;
+            timer.Interval = 10;
             timer.Tick += new EventHandler(Update); //timer.Trik：Timer有効時に呼ばれる
             timer.Start();
 
@@ -209,8 +212,8 @@ namespace Breakout
                 }
             }
 
-            //失敗時
-            if (ballPos.Y > this.Height)
+            //失敗時・成功時
+            if (ballPos.Y > this.Height || blockNum == 0)
             {
                 //画面閉じてリザルト表示
                 keikaTime.Stop();
@@ -248,17 +251,21 @@ namespace Breakout
 
         private void KeyPressed(object sender, KeyPressEventArgs e) //押下毎
         {
-            if (Form4.paddleMove == 0) //設定行っていない場合
+            if (!timerCount.Enabled)
             {
-                Form4.paddleMove = 20;
-            }
-            if (e.KeyChar == 'a' && paddlePos.Left > 0) //A押下時
-            {
-                this.paddlePos.X -= Form4.paddleMove;
-            }
-            else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
-            {
-                this.paddlePos.X += Form4.paddleMove;
+
+                if (Form4.paddleMove == 0) //設定行っていない場合
+                {
+                    Form4.paddleMove = 20;
+                }
+                if (e.KeyChar == 'a' && paddlePos.Left > 0) //A押下時
+                {
+                    this.paddlePos.X -= Form4.paddleMove;
+                }
+                else if (e.KeyChar == 's' && paddlePos.Right < this.Width) //S押下時
+                {
+                    this.paddlePos.X += Form4.paddleMove;
+                }
             }
         }
 
@@ -266,6 +273,7 @@ namespace Breakout
         {
             keikaTime.Stop();
             timer.Stop();
+            timerCount.Stop();
             this.Close();
             this.Hide();
         }
