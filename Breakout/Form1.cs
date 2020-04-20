@@ -68,6 +68,7 @@ namespace Breakout
 
         private void countDown(object sender, EventArgs e)
         {
+            //debug用
             //if (countSize == 200 && countNo == 3)
             //{
             //    System.Threading.Thread.Sleep(8000);

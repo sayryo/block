@@ -12,12 +12,27 @@ namespace Breakout
 {
     public partial class Form4 : Form
     {
+        Rectangle paddlePos; //パドル位置(Rectangle:四角形を作成)
+
+        Timer paddleTimer = new Timer();
+
+        Boolean paddleFrag;
+
         public static int paddleMove { get; set; } //パドル距離
 
         public Form4()
         {
             InitializeComponent();
+
             label1.Text = trackBar1.Value.ToString(); //距離初期値
+
+            this.paddlePos = new Rectangle(10, groupBox1.Height / 2, 100, 5); //パドル(位置横縦,サイズ横縦)
+
+            paddleTimer.Interval = 1000;
+            paddleTimer.Tick += new EventHandler(paddleAutoMove); //timer.Trik：Timer有効時に呼ばれる
+            paddleTimer.Start();
+
+            paddleMove = 50;
         }
 
         //バー移動時
@@ -37,6 +52,32 @@ namespace Breakout
         {
             trackBar1.Value ++;
             bar_Move(sender, e);
+        }
+
+        //パドル表示
+        private void DrawPaddle(object sender, PaintEventArgs e)
+        {
+            SolidBrush grayBrush = new SolidBrush(Color.DimGray);
+
+            //e.描画.長方形(色, 長方形)
+            e.Graphics.FillRectangle(grayBrush, paddlePos);
+        }
+
+        //パドル動作
+        private void paddleAutoMove(object sender, EventArgs e)
+        {
+            if (paddleFrag == false)
+            {
+                this.paddlePos.X += paddleMove;
+                paddleFrag = true;
+            }
+            else
+            {
+                this.paddlePos.X -= paddleMove;
+                paddleFrag = false;
+            }
+            //再描画
+            groupBox1.Invalidate();
         }
     }
 }
