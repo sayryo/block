@@ -45,28 +45,28 @@ namespace Breakout
             {
                 case 0:
                     //Easy
-                    x = -2;
-                    y = -4;
-                    break;
-                case 1:
-                    //Normal
-                    x = -3;
-                    y = -6;
-                    break;
-                case 2:
-                    //Hard
                     x = -5;
                     y = -10;
                     break;
+                case 1:
+                    //Normal
+                    x = -8;
+                    y = -15;
+                    break;
+                case 2:
+                    //Hard
+                    x = -10;
+                    y = -20;
+                    break;
                 case 3:
                     //Expert
-                    x = -8;
-                    y = -16;
+                    x = -15;
+                    y = -30;
                     break;
                 default:
                     //未選択時はNormal
-                    x = -3;
-                    y = -6;
+                    x = -8;
+                    y = -15;
                     break;
             }
 

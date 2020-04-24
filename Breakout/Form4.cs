@@ -79,5 +79,10 @@ namespace Breakout
             //再描画
             groupBox1.Invalidate();
         }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
