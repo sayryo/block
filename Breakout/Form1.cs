@@ -23,6 +23,7 @@ namespace Breakout
         Timer timerCount = new Timer(); //カウントダウンタイマー
         int countSize = 200; //カウント文字のサイズ
         int countNo = 3; //カウント数
+        double accelSpeed = 1; //加速速度
 
         public static int blockNum { get; set; } // ブロック数
         public static int blockNumMax { get; set; } // ブロック数最大値
@@ -172,7 +173,20 @@ namespace Breakout
             realTime();
 
             //ボールの移動
-            ballPos += ballSpeed;
+            //加速判定
+            int x = int.Parse(keikaTime.Elapsed.ToString().Substring(9, 3)); //リアルタイムのコンマ3桁を取得
+            if (Form4.accelFrag == true && x/100 == 1)
+            {
+                ballSpeed.X *= accelSpeed;
+                ballSpeed.Y *= accelSpeed;
+                ballPos += ballSpeed;
+                accelSpeed += 0.001;
+            }
+            else
+            {
+                ballPos += ballSpeed;
+            }
+            
 
             //左右の壁でのバウンド
             if (ballPos.X + ballRadius * 2 > this.Bounds.Width || ballPos.X - ballRadius < 0)
@@ -192,7 +206,10 @@ namespace Breakout
                              ballPos, ballRadius)
                 )
             {
-                ballSpeed.Y *= -1;
+                if (ballPos.Y  > paddlePos.Top)
+                {
+                    ballSpeed.Y *= -1;
+                }
             }
 
             // ブロックとのあたり判定

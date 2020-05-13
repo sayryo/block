@@ -20,6 +20,8 @@ namespace Breakout
 
         public static int paddleMove { get; set; } //パドル距離
 
+        public static Boolean accelFrag; //加速フラグ
+
         public Form4()
         {
             InitializeComponent();
@@ -80,9 +82,13 @@ namespace Breakout
             groupBox1.Invalidate();
         }
 
+        //加速ONボタン
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (radioButton1.Checked == true)
+            {
+                accelFrag = true;
+            }
         }
     }
 }

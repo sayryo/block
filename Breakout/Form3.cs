@@ -21,6 +21,8 @@ namespace Breakout
         {
             //倍率設定
             double bairitsu = ((Form2.mode + 1) /10 * 2) + 1;
+            //加速ONで倍率2倍
+            bairitsu *= 2;
 
             //基準点300*ブロック数*モード倍率
             return 300 * (Form1.blockNumMax - Form1.blockNum) * bairitsu;
